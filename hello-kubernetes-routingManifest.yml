@@ -1,3 +1,17 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hello-kubernetes-cert
+  namespace: istio-system
+spec:
+  secretName: hello-kubernetes-cert
+  commonName: hello.ci.mls.dev.os.uk
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  dnsNames:
+  - hello.ci.mls.dev.os.uk
+---
 apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 metadata:
@@ -11,7 +25,16 @@ spec:
       name: http
       protocol: HTTP
     hosts:
-    - "*"
+    - "hello.ci.mls.dev.os.uk"
+  - port:
+      number: 443
+      name: https
+      protocol: HTTPS
+    tls:
+      mode: SIMPLE
+      credentialName: hello-kubernetes-cert
+    hosts:
+    - "hello.ci.mls.dev.os.uk"
 ---
 apiVersion: networking.istio.io/v1alpha3
 kind: VirtualService
@@ -19,13 +42,13 @@ metadata:
   name: hello-kubernetes-virtual-service
 spec:
   hosts:
-  - "*"
+  - "hello.ci.mls.dev.os.uk"
   gateways:
   - hello-kubernetes-gateway
   http:
   - match:
     - uri:
-        exact: /hello
+        prefix: /
     route:
     - destination:
         host: hello-kubernetes-service.default.svc.cluster.local
