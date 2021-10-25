@@ -7,6 +7,7 @@ spec:
     matchLabels:
       app: hello-kubernetes
   jwtRules:
-  - issuer: "https://pk-demo.okta.com/oauth2/default"
+  - issuer: "https://sts.windows.net/${_tenantId}/"
     audiences:
-      - Z2YXe3agG0oERSlCTl4R_3W2
+      - https://${_appUrl}
+    jwksUri: "https://login.microsoftonline.com/${_tenantId}/discovery/keys"
