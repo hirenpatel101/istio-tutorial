@@ -1,0 +1,12 @@
+apiVersion: "security.istio.io/v1beta1"
+kind: "RequestAuthentication"
+metadata:
+  name: hello-kubernetes-request-auth
+spec:
+  selector:
+    matchLabels:
+      app: hello-kubernetes
+  jwtRules:
+  - issuer: "https://pk-demo.okta.com/oauth2/default"
+    audiences:
+      - Z2YXe3agG0oERSlCTl4R_3W2
