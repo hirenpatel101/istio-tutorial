@@ -1,0 +1,16 @@
+apiVersion: security.istio.io/v1beta1
+kind: AuthorizationPolicy
+metadata:
+  name: hello-kubernetes-auth-policy
+spec:
+  action: ALLOW
+  selector:
+    matchLabels:
+      app: hello-kubernetes
+  rules:
+    - when:
+        - key: destination.ip
+          values: ["127.0.0.1"]
+    - when:
+        - key: request.auth.principal
+          values: ["*"]
