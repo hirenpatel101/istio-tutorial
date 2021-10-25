@@ -26,6 +26,8 @@ spec:
   - match:
     - uri:
         prefix: /hello
+    rewrite:
+      uri: /
     route:
     - destination:
         host: hello-kubernetes-service.default.svc.cluster.local
